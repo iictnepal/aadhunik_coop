@@ -1,0 +1,4 @@
+<?php require_once __DIR__.'/config/config.php'; if($_SERVER['REQUEST_METHOD']!=='POST'||!verify_csrf($_POST['csrf_token']??'')){http_response_code(400);exit('Invalid request');}
+$name=trim($_POST['full_name']??'');$email=filter_var($_POST['email']??'',FILTER_VALIDATE_EMAIL);$phone=trim($_POST['phone']??'');$subject=trim($_POST['subject']??'');$message=trim($_POST['message']??'');
+if(!$name||!$email||!$phone||!$subject||!$message){$_SESSION['flash']='Please complete all fields.';header('Location: index.php?page=contact');exit;}
+$stmt=$pdo->prepare("INSERT INTO contact_messages(full_name,email,phone,subject,message,ip_address) VALUES(?,?,?,?,?,?)");$stmt->execute([$name,$email,$phone,$subject,$message,$_SERVER['REMOTE_ADDR']??null]);$_SESSION['flash']=tr('Your message was sent successfully.','तपाईंको सन्देश सफलतापूर्वक पठाइयो।');header('Location: index.php?page=contact');

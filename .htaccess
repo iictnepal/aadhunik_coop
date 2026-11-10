@@ -1,0 +1,21 @@
+# Apache Server Configuration for Aadhunik Jana Saving & Credit Co-operative Ltd.
+# Ensure mod_rewrite is enabled
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Prevent direct access to sensitive directories and files
+    RewriteRule ^(\.env|\.git|database/.*\.sql|config/.*|composer\.(json|lock))$ - [F,L]
+
+    # Security Headers
+    <IfModule mod_headers.c>
+        Header set X-Content-Type-Options "nosniff"
+        Header set X-Frame-Options "SAMEORIGIN"
+        Header set X-XSS-Protection "1; mode=block"
+        Header set Referrer-Policy "strict-origin-when-cross-origin"
+    </IfModule>
+
+    # Disable Directory Browsing
+    Options -Indexes
+</IfModule>
